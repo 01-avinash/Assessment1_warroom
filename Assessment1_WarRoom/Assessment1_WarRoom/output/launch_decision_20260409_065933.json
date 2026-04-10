@@ -1,0 +1,138 @@
+{
+  "decision": "Roll Back",
+  "rationale": {
+    "summary": "Multiple agents flagged critical failures. Immediate rollback required.",
+    "key_metric_findings": [
+      "Crash rate: 0.0091 (7.6x above threshold 0.0012)",
+      "API latency p95: 820ms (2.7x above 300ms threshold)",
+      "Payment success: 93.1% (below 97% threshold)",
+      "Churn: 112/day (3.7x above threshold 30)",
+      "Support tickets: 334/day (3.3x above threshold 100)"
+    ],
+    "feedback_summary": {
+      "negative_pct": 68.9,
+      "top_issues": [
+        "crash",
+        "payment",
+        "broken"
+      ]
+    },
+    "agent_votes": {
+      "PM": "NO-GO",
+      "Data": "NO-GO",
+      "Risk": "ROLL_BACK",
+      "Marketing": "PAUSE"
+    }
+  },
+  "risk_register": [
+    {
+      "risk": "App stability crisis",
+      "evidence": "Crash rate 0.0091 vs 0.005",
+      "severity": "CRITICAL",
+      "mitigation": "Rollback or hotfix within 2 hours",
+      "owner": "Engineering Lead"
+    },
+    {
+      "risk": "Performance degradation",
+      "evidence": "API p95 820ms vs 300ms",
+      "severity": "HIGH",
+      "mitigation": "Scale ML service. Fix DB pool. Deploy memory patch.",
+      "owner": "Backend Engineering"
+    },
+    {
+      "risk": "Revenue loss from payment failures",
+      "evidence": "Payment success 0.931",
+      "severity": "CRITICAL",
+      "mitigation": "Revert payment modal. Audit failed transactions.",
+      "owner": "Engineering + Finance"
+    },
+    {
+      "risk": "Accelerating customer churn",
+      "evidence": "Cancellations: 112/day",
+      "severity": "HIGH",
+      "mitigation": "Offer service credit. Fix stability first.",
+      "owner": "Customer Success"
+    },
+    {
+      "risk": "Reputational damage",
+      "evidence": "Negative sentiment: 68.9%",
+      "severity": "HIGH",
+      "mitigation": "Publish status update. Respond to all 1-star reviews.",
+      "owner": "Marketing"
+    }
+  ],
+  "action_plan_24_48h": [
+    {
+      "time": "0-2h",
+      "action": "Flip feature flag ENABLE_V2_RECOMMENDATIONS=false (rollback to v1)",
+      "owner": "Engineering Lead",
+      "priority": "P0"
+    },
+    {
+      "time": "0-2h",
+      "action": "Deploy memory leak patch v2.0.2 to staging and verify",
+      "owner": "Backend Engineer",
+      "priority": "P0"
+    },
+    {
+      "time": "0-4h",
+      "action": "Audit all failed payment transactions since April 1st, initiate refunds",
+      "owner": "Finance + Engineering",
+      "priority": "P0"
+    },
+    {
+      "time": "2-6h",
+      "action": "Scale ML inference service for 14,000 concurrent users",
+      "owner": "DevOps",
+      "priority": "P1"
+    },
+    {
+      "time": "2-6h",
+      "action": "Increase database connection pool size",
+      "owner": "Backend Engineering",
+      "priority": "P1"
+    },
+    {
+      "time": "4-12h",
+      "action": "Post status update every 2h; respond to negative reviews",
+      "owner": "Marketing",
+      "priority": "P1"
+    },
+    {
+      "time": "12-24h",
+      "action": "Full load test at 15,000 concurrent users before re-launch",
+      "owner": "QA + Engineering",
+      "priority": "P1"
+    },
+    {
+      "time": "24-48h",
+      "action": "Prepare service credits for affected premium users",
+      "owner": "Customer Success",
+      "priority": "P2"
+    },
+    {
+      "time": "24-48h",
+      "action": "Review pre-launch checklist to require load testing",
+      "owner": "Engineering Manager",
+      "priority": "P2"
+    }
+  ],
+  "communication_plan": {
+    "internal": "INTERNAL: CRISIS reception. 68.9% negative (45 responses).",
+    "external": "We are aware some users are experiencing issues. Our engineering team is actively investigating. We apologise and will update every 2 hours.",
+    "cadence": "Every 2 hours until resolved",
+    "channels": [
+      "Status page",
+      "In-app banner",
+      "Email",
+      "Social media"
+    ]
+  },
+  "confidence_score": 0.92,
+  "confidence_boosters": [
+    "Load test at 14,000 concurrent users",
+    "Root cause fix deployed and verified",
+    "Payment audit complete",
+    "48-hour stability window post-rollback"
+  ]
+}
